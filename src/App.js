@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import { createBrowserHistory } from 'history'
+import { Router, Route, Switch } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import store from './redux/store'
+import indexRoutes from 'routes/index.js'
+import 'assets/css/senti.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import TProvider from 'components/Localization/TProvider'
+
+import { MuiThemeProvider } from '@material-ui/core';
+import { lightTheme } from 'assets/themes';
+
+export const hist = createBrowserHistory();
+
+class App extends Component {
+	render() {
+		return (
+			<Provider store={store}>
+					<TProvider>
+						<MuiThemeProvider theme={lightTheme}>
+							<Router history={hist}>
+								<Switch>
+									{indexRoutes.map((prop, key) => {
+										return <Route path={prop.path} component={prop.component} key={key} exact={prop.exact ? true : false} />;
+									})}
+								</Switch>
+							</Router>
+						</MuiThemeProvider>
+					</TProvider>
+			</Provider>
+		)
+	}
 }
 
-export default App;
+
+export default App
